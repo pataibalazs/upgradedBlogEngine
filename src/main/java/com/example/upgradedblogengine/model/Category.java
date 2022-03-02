@@ -1,5 +1,7 @@
 package com.example.upgradedblogengine.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -11,24 +13,24 @@ public class Category {
     private Long categoryId;
     private String categoryName;
 
-    /*
-    @ManyToMany
+
+    @ManyToMany()
     @JoinTable(
             name = "categoryLabels",
-            joinColumns = @JoinColumn(name = "categoryId"),
-            inverseJoinColumns = @JoinColumn(name = "labelId"))
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "label_id"))
+    @JsonIgnore
     Set<Label> labels;
-
-     */
 
 
     public Category() {
+    }
 
-    }
-    public Category(Long categoryId, String categoryName) {
-        this.categoryId = categoryId;
+    public Category(String categoryName, Set<Label> labels) {
         this.categoryName = categoryName;
+        this.labels = labels;
     }
+
 
     public Long getCategoryId() {
         return categoryId;
@@ -47,4 +49,24 @@ public class Category {
     }
 
 
+    public Set<Label> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(Set<Label> labels) {
+        this.labels = labels;
+    }
+
+    public void addToLabels(Label label){
+        this.labels.add(label);
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "categoryId=" + categoryId +
+                ", categoryName='" + categoryName + '\'' +
+                ", labels=" + labels +
+                '}';
+    }
 }

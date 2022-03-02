@@ -1,29 +1,120 @@
 package com.example.upgradedblogengine.service;
 
 
+import com.example.upgradedblogengine.mapper.CategoryMapper;
 import com.example.upgradedblogengine.model.Category;
+import com.example.upgradedblogengine.model.Label;
 import com.example.upgradedblogengine.repository.CategoryRepository;
+import com.example.upgradedblogengine.web.dto.category.NewCategoryDTO;
+import com.example.upgradedblogengine.web.dto.category.NewCategoryWithNewLabelsDTO;
+import com.example.upgradedblogengine.web.dto.label.NewLabelDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
+import javax.transaction.Transactional;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
 
-    @Autowired
-    CategoryRepository categoryRepository;
+    private LabelService labelService;
+
+    private CategoryRepository categoryRepository;
+
+
+    public CategoryServiceImpl(LabelService labelService, CategoryRepository categoryRepository) {
+        this.labelService = labelService;
+        this.categoryRepository = categoryRepository;
+    }
+/*
+    @Override
+    @Transactional
+    public Category createCategoryWithLabels(NewCategoryWithNewLabelsDTO newCategoryWithNewLabelsDTO) {
+        Set<NewLabelDTO> initLabelList=newCategoryWithNewLabelsDTO.getLabels();
+        Iterator<NewLabelDTO> labelListIterator = initLabelList.iterator();
+        Set<Label> labelList = new HashSet<Label>();
+
+        Category category = new Category();
+
+        CategoryMapper.INSTANCE.updateFromDto(newCategoryWithNewLabelsDTO.getNewCategory(), category);
+        category=categoryRepository.save(category);
+
+        category.setCategoryName(newCategoryWithNewLabelsDTO.getNewCategory().getCategoryName());
+        while(labelListIterator.hasNext()) {
+            Set<Category> categoryLista=new HashSet<Category>();
+            categoryLista.add(category);
+            categoryLista.add(category);
+            Label label=labelService.createLabel(labelListIterator.next());
+            label.setCategories(categoryLista);
+            labelList.add(label);
+        }
+
+        category.setLabels(labelList);
+        return category;
+    }
+
+ */
+    @Override
+    @Transactional
+    public void createCategoryWithLabels(NewCategoryWithNewLabelsDTO newCategoryWithNewLabelsDTO) {
+        Set<NewLabelDTO> initLabelList=newCategoryWithNewLabelsDTO.getLabels();
+        Iterator<NewLabelDTO> labelListIterator = initLabelList.iterator();
+
+        Set<Label> labelList = new HashSet<Label>();
+        Set<Category> categoryLista=new HashSet<Category>();
+        Category category = new Category();
+
+        CategoryMapper.INSTANCE.updateFromDto(newCategoryWithNewLabelsDTO.getNewCategory(), category);
+
+        category.setCategoryName(newCategoryWithNewLabelsDTO.getNewCategory().getCategoryName());
+        categoryLista.add(category);
+
+        System.out.println(category);
+
+
+        while(labelListIterator.hasNext()) {
+
+            Label label=labelService.createLabelWithCategories(labelListIterator.next(),categoryLista);
+
+
+            labelList.add(label);
+        }
+        category.setLabels(labelList);
+        categoryRepository.save(category);
+    }
+
 
     @Override
     public List<Category> getCategories(Pageable pageable){
 
         return categoryRepository.findAll(pageable).getContent();
-
-
     }
+
+    @Override
+    public Category createCategory(NewCategoryDTO newCategory) {
+        Category category = new Category();
+
+        System.out.println(newCategory);
+
+        category.setCategoryName(newCategory.getCategoryName());
+
+        Set<Label> labels=labelService.getPersistedLabels(newCategory.getLabels());
+
+        category.setLabels(labels);
+
+
+        return categoryRepository.save(category);
+    }
+
+
+
+
+
 
 
 
