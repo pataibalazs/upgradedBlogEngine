@@ -74,9 +74,6 @@ public class CategoryServiceImpl implements CategoryService {
         category.setCategoryName(newCategoryWithNewLabelsDTO.getNewCategory().getCategoryName());
         categoryLista.add(category);
 
-        System.out.println(category);
-
-
         while(labelListIterator.hasNext()) {
 
             Label label=labelService.createLabelWithCategories(labelListIterator.next(),categoryLista);

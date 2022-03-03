@@ -18,6 +18,5 @@ public interface LabelService {
     Label createLabel(NewLabelDTO newLabel);
     Label createLabelWithCategories(NewLabelDTO newLabel,Set<Category> categoryList);
     void deleteLabel(Long id);
-    //List<Category>findCategoryBylabelId(Long labelId);
 
 }

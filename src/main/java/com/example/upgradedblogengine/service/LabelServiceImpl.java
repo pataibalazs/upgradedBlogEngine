@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,8 +23,14 @@ public class LabelServiceImpl implements LabelService{
 
 
 
-    @Autowired
-    LabelRepository labelRepository;
+
+    private LabelRepository labelRepository;
+    private CategoryRepository categoryRepository;
+
+    public LabelServiceImpl(LabelRepository labelRepository, CategoryRepository categoryRepository) {
+        this.labelRepository = labelRepository;
+        this.categoryRepository = categoryRepository;
+    }
 
     @Override
     public List<Label> getLabels(Pageable pageable){
@@ -53,24 +61,14 @@ public class LabelServiceImpl implements LabelService{
         return labelRepository.findAllById(labels.stream().map(Label::getLabelId).collect(Collectors.toList())).stream().collect(Collectors.toSet());
     }
 
-
-
     @Override
+    @Transactional
     public void deleteLabel(Long id){
-
-        labelRepository.deleteById(id);
+        Label label = labelRepository.findById(id).orElseThrow();
+        label.getCategories().forEach(u->u.getLabels().remove(label));
+        categoryRepository.saveAll(label.getCategories());
+        labelRepository.delete(label);
     }
-
-
-
-    /*
-    @Override
-    public List<Category> findCategoryBylabelId(Long labelId)
-    {
-        return labelRepository.findCategoryBylabelId(labelId);
-    }
-
-     */
 
 
 

@@ -16,4 +16,6 @@ public interface CategoryService {
 
     public void createCategoryWithLabels(NewCategoryWithNewLabelsDTO newCategoryWithNewLabelsDTO);
 
+
+
 }

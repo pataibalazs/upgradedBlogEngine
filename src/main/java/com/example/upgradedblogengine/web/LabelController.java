@@ -3,6 +3,7 @@ package com.example.upgradedblogengine.web;
 
 import com.example.upgradedblogengine.model.Category;
 import com.example.upgradedblogengine.model.Label;
+import com.example.upgradedblogengine.repository.CategoryRepository;
 import com.example.upgradedblogengine.repository.LabelRepository;
 import com.example.upgradedblogengine.service.LabelService;
 import com.example.upgradedblogengine.web.dto.category.CategoryDTO;
@@ -29,6 +30,7 @@ public class LabelController {
         this.labelRepository = labelRepository;
     }
 
+
     private LabelDTO mapLabelToDTO(Label label) {
         return new LabelDTO(label.getLabelName(),label.getCategories());
     }
@@ -37,19 +39,19 @@ public class LabelController {
         return labelService.getLabels(pageable).stream().map(label -> mapLabelToDTO(label)).collect(Collectors.toList());
     }
 
-
+/*
     @DeleteMapping({"/{id}"})
     public void deleteLabel(@PathVariable Long id) {
-        //List<Category> categoryList=labelService.findCategoryBylabelId(id);
-/*
-        for(Category category : categoryList)
-        {
-            labelRepository.deletelabelIdBycategoryNameAndlabelId(category.getCategoryName(),id);
-        }
-        labelService.deleteLabel(id);
+        System.out.println("AAAAAAAAAAAAAAA");
+        System.out.println(categoryRepository.findCategoryByLabelsContaining(id));
+        System.out.println("AAAAAAAAAAAAAAA");
+        //labelService.deleteLabel(id);
     }
 
  */
+
+    @DeleteMapping({"/{id}"})
+    public void deleteLabel(@PathVariable Long id) {
         labelService.deleteLabel(id);
     }
 }
