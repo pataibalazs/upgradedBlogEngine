@@ -9,6 +9,7 @@ import com.example.upgradedblogengine.service.LabelService;
 import com.example.upgradedblogengine.web.dto.category.CategoryDTO;
 import com.example.upgradedblogengine.web.dto.label.LabelDTO;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -23,13 +24,11 @@ public class LabelController {
 
 
     private final LabelService labelService;
-    private final LabelRepository labelRepository;
 
-    public LabelController(LabelService labelService, LabelRepository labelRepository) {
+
+    public LabelController(LabelService labelService) {
         this.labelService = labelService;
-        this.labelRepository = labelRepository;
     }
-
 
     private LabelDTO mapLabelToDTO(Label label) {
         return new LabelDTO(label.getLabelName(),label.getCategories());
@@ -49,7 +48,7 @@ public class LabelController {
     }
 
  */
-
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping({"/{id}"})
     public void deleteLabel(@PathVariable Long id) {
         labelService.deleteLabel(id);

@@ -55,11 +55,21 @@ public class LabelServiceImpl implements LabelService{
         labelRepository.save(label);
         return label;
     }
-
+/*
     @Override
+    public Set<Label> getPersistedLabels(Collection<Label> labels){
+        return labelRepository.findAllByLabelName(labels.stream().map(Label::getLabelName).collect(Collectors.toList())).stream().collect(Collectors.toSet());
+    }
+
+ */
+
+
     public Set<Label> getPersistedLabels(Collection<Label> labels){
         return labelRepository.findAllById(labels.stream().map(Label::getLabelId).collect(Collectors.toList())).stream().collect(Collectors.toSet());
     }
+
+
+
 
     @Override
     @Transactional

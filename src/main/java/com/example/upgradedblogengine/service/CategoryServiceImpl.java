@@ -31,37 +31,10 @@ public class CategoryServiceImpl implements CategoryService {
         this.labelService = labelService;
         this.categoryRepository = categoryRepository;
     }
-/*
+
     @Override
     @Transactional
     public Category createCategoryWithLabels(NewCategoryWithNewLabelsDTO newCategoryWithNewLabelsDTO) {
-        Set<NewLabelDTO> initLabelList=newCategoryWithNewLabelsDTO.getLabels();
-        Iterator<NewLabelDTO> labelListIterator = initLabelList.iterator();
-        Set<Label> labelList = new HashSet<Label>();
-
-        Category category = new Category();
-
-        CategoryMapper.INSTANCE.updateFromDto(newCategoryWithNewLabelsDTO.getNewCategory(), category);
-        category=categoryRepository.save(category);
-
-        category.setCategoryName(newCategoryWithNewLabelsDTO.getNewCategory().getCategoryName());
-        while(labelListIterator.hasNext()) {
-            Set<Category> categoryLista=new HashSet<Category>();
-            categoryLista.add(category);
-            categoryLista.add(category);
-            Label label=labelService.createLabel(labelListIterator.next());
-            label.setCategories(categoryLista);
-            labelList.add(label);
-        }
-
-        category.setLabels(labelList);
-        return category;
-    }
-
- */
-    @Override
-    @Transactional
-    public void createCategoryWithLabels(NewCategoryWithNewLabelsDTO newCategoryWithNewLabelsDTO) {
         Set<NewLabelDTO> initLabelList=newCategoryWithNewLabelsDTO.getLabels();
         Iterator<NewLabelDTO> labelListIterator = initLabelList.iterator();
 
@@ -82,7 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
             labelList.add(label);
         }
         category.setLabels(labelList);
-        categoryRepository.save(category);
+        return categoryRepository.save(category);
     }
 
 
@@ -96,7 +69,6 @@ public class CategoryServiceImpl implements CategoryService {
     public Category createCategory(NewCategoryDTO newCategory) {
         Category category = new Category();
 
-        System.out.println(newCategory);
 
         category.setCategoryName(newCategory.getCategoryName());
 
@@ -107,6 +79,25 @@ public class CategoryServiceImpl implements CategoryService {
 
         return categoryRepository.save(category);
     }
+    @Override
+    public void deleteLabel(Long id){
+        categoryRepository.deleteById(id);
+    }
+
+    @Override
+    public Category updateCategoryById(Long id, NewCategoryDTO newCategory) {
+
+        Category category = categoryRepository.findById(id).orElseThrow();
+
+        CategoryMapper.INSTANCE.updateFromDto(newCategory, category);
+
+        Set<Label> labels=labelService.getPersistedLabels(newCategory.getLabels());
+
+        category.setLabels(labels);
+
+        return categoryRepository.save(category);
+    }
+
 
 
 

@@ -1,4 +1,5 @@
 package com.example.upgradedblogengine.web;
+import com.example.upgradedblogengine.mapper.CategoryMapper;
 import com.example.upgradedblogengine.model.Category;
 import com.example.upgradedblogengine.model.Label;
 import com.example.upgradedblogengine.repository.CategoryRepository;
@@ -7,6 +8,7 @@ import com.example.upgradedblogengine.web.dto.category.CategoryDTO;
 import com.example.upgradedblogengine.web.dto.category.NewCategoryDTO;
 import com.example.upgradedblogengine.web.dto.category.NewCategoryWithNewLabelsDTO;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,12 +22,10 @@ import java.util.stream.Collectors;
 public class CategoryController {
 
     private final CategoryService categoryService;
-    private final CategoryRepository categoryRepository;
 
 
-    public CategoryController(CategoryService categoryService, CategoryRepository categoryRepository) {
+    public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
-        this.categoryRepository = categoryRepository;
     }
 
     //átcastol mapból DTO-vá
@@ -46,14 +46,21 @@ public class CategoryController {
     }
 
     @PostMapping("/withLabels")
-    public void createCategory(@RequestBody @Valid NewCategoryWithNewLabelsDTO newCategoryWithNewLabels) {
+    public CategoryDTO createCategory(@RequestBody @Valid NewCategoryWithNewLabelsDTO newCategoryWithNewLabels) {
         //mapCategoryToDTO(categoryService.createCategoryWithLabels(newCategoryWithNewLabels));
-        categoryService.createCategoryWithLabels(newCategoryWithNewLabels);
+        return mapCategoryToDTO(categoryService.createCategoryWithLabels(newCategoryWithNewLabels));
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping({"/{id}"})
     public void deleteCategory(@PathVariable Long id) {
-        categoryRepository.deleteById(id);
+        categoryService.deleteLabel(id);
+    }
+
+    @PutMapping("/{id}")
+    public CategoryDTO updateCategoryWithExistingLabel(@PathVariable Long id, @RequestBody @Valid NewCategoryDTO newCategory)
+    {
+        return CategoryMapper.INSTANCE.categoryToDTO(categoryService.updateCategoryById(id, newCategory));
     }
 
 

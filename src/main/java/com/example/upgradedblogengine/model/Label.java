@@ -18,9 +18,9 @@ public class Label {
     Set<Category> categories;
 
 
-    public Label( String labelName, Set<Category> categories) {
+    public Label( String name, Set<Category> categories) {
 
-        this.labelName = labelName;
+        this.labelName = name;
         this.categories = categories;
     }
     public Label() {
