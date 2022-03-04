@@ -2,8 +2,10 @@ package com.example.upgradedblogengine.web.dto.label;
 
 import com.example.upgradedblogengine.model.Category;
 import com.example.upgradedblogengine.model.Label;
+import com.example.upgradedblogengine.web.dto.category.CategoryDTO;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -11,11 +13,12 @@ public class NewLabelDTO {
 
 
     @NotEmpty
+    @Size(min = 3, max = 10)
     private String labelName;
-    Set<Category> categories;
+    Set<String> categories;
 
 
-    public NewLabelDTO(String labelName, Set<Category> categories) {
+    public NewLabelDTO(String labelName, Set<String> categories) {
         this.labelName = labelName;
         this.categories = categories;
     }
@@ -30,19 +33,11 @@ public class NewLabelDTO {
         this.labelName = labelName;
     }
 
-    public Set<Category> getCategories() {
+    public Set<String> getCategories() {
         return categories;
     }
 
-    public void setCategories(Set<Category> categories) {
+    public void setCategories(Set<String> categories) {
         this.categories = categories;
-    }
-
-    @Override
-    public String toString() {
-        return "NewLabelDTO{" +
-                "labelName='" + labelName + '\'' +
-                ", categories=" + categories +
-                '}';
     }
 }

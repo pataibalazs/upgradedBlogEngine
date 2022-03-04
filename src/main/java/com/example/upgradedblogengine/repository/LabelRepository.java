@@ -16,5 +16,5 @@ public interface LabelRepository extends JpaRepository<Label, Long>{
     //public List<Label> findAllByName(Iterable<String> names);
 
 
-
+    public Label findLabelByLabelName(String labelName);
 }

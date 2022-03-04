@@ -2,6 +2,7 @@ package com.example.upgradedblogengine.web.dto.category;
 
 
 import com.example.upgradedblogengine.model.Label;
+import com.example.upgradedblogengine.web.dto.label.LabelDTO;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -13,14 +14,12 @@ public class NewCategoryDTO {
     @NotEmpty
     private String categoryName;
     @NotNull
-    Set<Label> labels;
+    Set<LabelDTO> labels;
 
-    public NewCategoryDTO(String categoryName, Set<Label> labels) {
+
+    public NewCategoryDTO(String categoryName, Set<LabelDTO> labels) {
         this.categoryName = categoryName;
         this.labels = labels;
-    }
-
-    public NewCategoryDTO() {
     }
 
     public String getCategoryName() {
@@ -31,19 +30,11 @@ public class NewCategoryDTO {
         this.categoryName = categoryName;
     }
 
-    public Set<Label> getLabels() {
+    public Set<LabelDTO> getLabels() {
         return labels;
     }
 
-    public void setLabels(Set<Label> labels) {
+    public void setLabels(Set<LabelDTO> labels) {
         this.labels = labels;
-    }
-
-    @Override
-    public String toString() {
-        return "NewCategoryDTO{" +
-                "categoryName='" + categoryName + '\'' +
-                ", labels=" + labels +
-                '}';
     }
 }

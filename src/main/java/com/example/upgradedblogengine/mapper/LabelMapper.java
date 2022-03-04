@@ -16,7 +16,7 @@ public interface LabelMapper {
     //ez igazából beaneket mappol össze, még csak definiálni sem kell
     LabelMapper INSTANCE = Mappers.getMapper(LabelMapper.class);
 
-    LabelDTO labelToDTO(Label airport);
+    LabelDTO labelToDTO(Label label);
 
     void updateFromDto(NewLabelDTO dto, @MappingTarget Label label);
 }

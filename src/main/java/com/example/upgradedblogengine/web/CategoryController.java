@@ -1,5 +1,6 @@
 package com.example.upgradedblogengine.web;
 import com.example.upgradedblogengine.mapper.CategoryMapper;
+import com.example.upgradedblogengine.mapper.LabelMapper;
 import com.example.upgradedblogengine.model.Category;
 import com.example.upgradedblogengine.model.Label;
 import com.example.upgradedblogengine.repository.CategoryRepository;
@@ -30,7 +31,10 @@ public class CategoryController {
 
     //átcastol mapból DTO-vá
     private CategoryDTO mapCategoryToDTO(Category category) {
-        return new CategoryDTO(category.getCategoryName(),category.getLabels());
+        return new CategoryDTO(category.getCategoryName(),
+                category.getLabels().stream().map(label -> LabelMapper.INSTANCE.labelToDTO(label)).
+                        collect(Collectors.toList()).stream().collect(Collectors.toSet())
+                );
     }
 
     @GetMapping()
@@ -40,10 +44,13 @@ public class CategoryController {
     }
 
     //requestBody annyit takar hogy az utána lévő tagot JSON-ban fogom elküldeni tehát azt a kliens küldi
+    /*
     @PostMapping()
     public CategoryDTO createCategory(@RequestBody NewCategoryDTO newCategory) {
         return mapCategoryToDTO(categoryService.createCategory(newCategory));
     }
+
+     */
 
     @PostMapping("/withLabels")
     public CategoryDTO createCategory(@RequestBody @Valid NewCategoryWithNewLabelsDTO newCategoryWithNewLabels) {
@@ -57,11 +64,14 @@ public class CategoryController {
         categoryService.deleteLabel(id);
     }
 
+    /*
     @PutMapping("/{id}")
     public CategoryDTO updateCategoryWithExistingLabel(@PathVariable Long id, @RequestBody @Valid NewCategoryDTO newCategory)
     {
         return CategoryMapper.INSTANCE.categoryToDTO(categoryService.updateCategoryById(id, newCategory));
     }
+
+     */
 
 
 

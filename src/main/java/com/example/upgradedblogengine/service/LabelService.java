@@ -19,4 +19,6 @@ public interface LabelService {
     Label createLabelWithCategories(NewLabelDTO newLabel,Set<Category> categoryList);
     void deleteLabel(Long id);
 
+    public Label LabelByNameFromDB(String LabelName);
+
 }

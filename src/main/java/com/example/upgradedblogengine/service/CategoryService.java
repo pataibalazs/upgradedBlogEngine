@@ -13,12 +13,12 @@ public interface CategoryService {
 
     List<Category> getCategories(Pageable pageable);
 
-    Category createCategory(NewCategoryDTO newCategory);
+    //Category createCategory(NewCategoryDTO newCategory);
 
     public Category createCategoryWithLabels(NewCategoryWithNewLabelsDTO newCategoryWithNewLabelsDTO);
 
     public void deleteLabel(Long id);
 
-    Category updateCategoryById(Long id, NewCategoryDTO newCategoryDTO);
+    //Category updateCategoryById(Long id, NewCategoryDTO newCategoryDTO);
 
 }

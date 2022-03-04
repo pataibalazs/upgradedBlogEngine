@@ -1,6 +1,7 @@
 package com.example.upgradedblogengine.web.dto.category;
 
 import com.example.upgradedblogengine.model.Label;
+import com.example.upgradedblogengine.web.dto.label.LabelDTO;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -8,10 +9,10 @@ import java.util.Set;
 public class CategoryDTO {
 
     private String categoryName;
-    Set<Label> labels;
+    Set<LabelDTO> labels;
 
 
-    public CategoryDTO(String categoryName, Set<Label> labels) {
+    public CategoryDTO(String categoryName, Set<LabelDTO> labels) {
         this.categoryName = categoryName;
         this.labels = labels;
     }
@@ -27,11 +28,11 @@ public class CategoryDTO {
         this.categoryName = categoryName;
     }
 
-    public Set<Label> getLabels() {
+    public Set<LabelDTO> getLabels() {
         return labels;
     }
 
-    public void setLabels(Set<Label> labels) {
+    public void setLabels(Set<LabelDTO> labels) {
         this.labels = labels;
     }
 }

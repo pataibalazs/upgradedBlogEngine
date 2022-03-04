@@ -1,6 +1,8 @@
 package com.example.upgradedblogengine.web;
 
 
+import com.example.upgradedblogengine.mapper.CategoryMapper;
+import com.example.upgradedblogengine.mapper.LabelMapper;
 import com.example.upgradedblogengine.model.Category;
 import com.example.upgradedblogengine.model.Label;
 import com.example.upgradedblogengine.repository.CategoryRepository;
@@ -29,14 +31,19 @@ public class LabelController {
     public LabelController(LabelService labelService) {
         this.labelService = labelService;
     }
-
+/*
     private LabelDTO mapLabelToDTO(Label label) {
-        return new LabelDTO(label.getLabelName(),label.getCategories());
+       // return new LabelDTO(label.getLabelName(), CategoryMapper.INSTANCE.categoryToDTO(label.getCategories()));
     }
+
+ */
+    /*
     @GetMapping()
     public List<LabelDTO> getLabels(Pageable pageable) {
         return labelService.getLabels(pageable).stream().map(label -> mapLabelToDTO(label)).collect(Collectors.toList());
     }
+
+     */
 
 /*
     @DeleteMapping({"/{id}"})

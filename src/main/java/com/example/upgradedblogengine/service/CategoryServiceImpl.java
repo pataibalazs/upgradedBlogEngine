@@ -65,7 +65,9 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findAll(pageable).getContent();
     }
 
-    @Override
+
+    /*
+        @Override
     public Category createCategory(NewCategoryDTO newCategory) {
         Category category = new Category();
 
@@ -79,11 +81,14 @@ public class CategoryServiceImpl implements CategoryService {
 
         return categoryRepository.save(category);
     }
+
+     */
     @Override
     public void deleteLabel(Long id){
         categoryRepository.deleteById(id);
     }
 
+    /*
     @Override
     public Category updateCategoryById(Long id, NewCategoryDTO newCategory) {
 
@@ -91,12 +96,16 @@ public class CategoryServiceImpl implements CategoryService {
 
         CategoryMapper.INSTANCE.updateFromDto(newCategory, category);
 
-        Set<Label> labels=labelService.getPersistedLabels(newCategory.getLabels());
+        Set<Label> labels=labelService.getPersistedLabels(newCategory.getLabels()
+
+        );
 
         category.setLabels(labels);
 
         return categoryRepository.save(category);
     }
+
+     */
 
 
 

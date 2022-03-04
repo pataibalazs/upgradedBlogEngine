@@ -8,14 +8,19 @@ import java.util.Set;
 
 @Entity
 public class Label {
+
     @Id
     @GeneratedValue
+    @Column(name = "labelId")
     private Long labelId;
     private String labelName;
 
     @ManyToMany(mappedBy = "labels")
     @JsonIgnore
     Set<Category> categories;
+
+    @OneToOne(mappedBy="label")
+    private Blogpost blogpost;
 
 
     public Label( String name, Set<Category> categories) {

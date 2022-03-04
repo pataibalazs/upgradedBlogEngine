@@ -38,11 +38,15 @@ public class LabelServiceImpl implements LabelService{
         //return labelRepository.findAll(pageable).getContent();
         return labelRepository.findAll();
     }
+    @Override
+    public Label LabelByNameFromDB(String labelName){
+        return labelRepository.findLabelByLabelName(labelName);
+    }
 
     @Override
     public Label createLabel(NewLabelDTO newLabel){
         Label label= new Label();
-        label.setLabelName(newLabel.getLabelName());
+        LabelMapper.INSTANCE.updateFromDto(newLabel,label);
         return labelRepository.save(label);
     }
 
